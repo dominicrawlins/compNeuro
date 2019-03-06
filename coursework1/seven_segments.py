@@ -4,7 +4,7 @@
 from math import *
 import numpy as np
 
-#from submission import *
+from submission import *
 
 def seven_segment(pattern):
 
@@ -56,8 +56,18 @@ def seven_segment(pattern):
             number+=pow(2,i)
     print(int(number))
 
-#submission=Submission("your_name")
-#submission.header("Your Name")
+def calculateenergy(weightmatrix, pattern):
+    energy = 0
+    for i in range(len(pattern)):
+        for j in range(i):
+            if(i != j):
+                energy += pattern[i] * pattern[j] * weightmatrix[i][j]
+    energy = energy * -0.5
+    return energy
+
+
+submission=Submission("dominic_rawlins")
+submission.header("Dominic Rawlins")
 
 six=[1,1,-1,1,1,1,1,-1,1,1,-1]
 three=[1,-1,1,1,-1,1,1,1,1,-1,-1]
@@ -67,9 +77,6 @@ seven_segment(three)
 seven_segment(six)
 seven_segment(one)
 
-##this assumes you have called your weight matrix "weight_matrix"
-#submission.section("Weight matrix")
-#submission.matrix_print("W",weight_matrix)
 
 
 def updateweights(weightmatrix, patterns):
@@ -82,11 +89,21 @@ def updateweights(weightmatrix, patterns):
 lengthofnetwork = len(six)
 weightmatrix = np.zeros((lengthofnetwork, lengthofnetwork))
 examplepatterns = (three, six, one)
+examplepatternsname = ("three", "six", "one")
 
 weightmatrix = updateweights(weightmatrix, examplepatterns)
 
 
-def hopfieldNetwork(weightmatrix, pattern):
+
+#this assumes you have called your weight matrix "weight_matrix"
+submission.section("Weight matrix")
+submission.matrix_print("W",weightmatrix)
+
+
+for idx, pattern in enumerate(examplepatterns):
+    print("energy of ", examplepatternsname[idx], ": ", calculateenergy(weightmatrix, pattern))
+
+def hopfieldNetwork(weightmatrix, pattern, threshold):
     iteration = 0
     while 1:
         newpattern = pattern[:]
@@ -95,9 +112,9 @@ def hopfieldNetwork(weightmatrix, pattern):
             for j in range(len(pattern)):
                 if(i != j):
                     if(i > j):
-                        newpattern[i] += pattern[j] * weightmatrix[i][j]
+                        newpattern[i] += (pattern[j] * weightmatrix[i][j]) - threshold
                     else:
-                        newpattern[i] += pattern[j] * weightmatrix[j][i]
+                        newpattern[i] += (pattern[j] * weightmatrix[j][i]) - threshold
         for i in range(len(pattern)):
             if(newpattern[i] > 0):
                 newpattern[i] = 1
@@ -108,51 +125,55 @@ def hopfieldNetwork(weightmatrix, pattern):
             return pattern
         iteration+=1
         pattern = newpattern[:]
+        seven_segment(pattern)
+        print("energy after iteration ", iteration, ": ", calculateenergy(weightmatrix, pattern))
 
 
 print("test1")
-#submission.section("Test 1")
+submission.section("Test 1")
 
 test=[1,-1,1,1,-1,1,1,-1,-1,-1,-1]
 
-test = hopfieldNetwork(weightmatrix, test)
+test = hopfieldNetwork(weightmatrix, test, 0)
+energy = calculateenergy(weightmatrix, test)
 
 
 
-seven_segment(test)
-#submission.seven_segment(test)
-##for COMSM0027
+#seven_segment(test)
+submission.seven_segment(test)
+#for COMSM0027
 
-##where energy is the energy of test
-#submission.qquad()
-#submission.print_number(energy)
+#where energy is the energy of test
+submission.qquad()
+submission.print_number(energy)
 
-##this prints a space
-#submission.qquad()
+#this prints a space
+submission.qquad()
 
 #here the network should run printing at each step
 #for the final submission it should also output to submission on each step
 
 print("test2")
-#submission.section("Test 2")
+submission.section("Test 2")
 
 test=[1,1,1,1,1,1,1,-1,-1,-1,-1]
-test = hopfieldNetwork(weightmatrix, test)
+test = hopfieldNetwork(weightmatrix, test, 0)
+energy = calculateenergy(weightmatrix, test)
 
-seven_segment(test)
+#seven_segment(test)
 
-#submission.seven_segment(test)
+submission.seven_segment(test)
 
-##for COMSM0027
-##where energy is the energy of test
-#submission.qquad()
-#submission.print_number(energy)
+#for COMSM0027
+#where energy is the energy of test
+submission.qquad()
+submission.print_number(energy)
 
 ##this prints a space
-#submission.qquad()
+submission.qquad()
 
 #here the network should run printing at each step
 #for the final submission it should also output to submission on each step
 
 
-#submission.bottomer()
+submission.bottomer()
