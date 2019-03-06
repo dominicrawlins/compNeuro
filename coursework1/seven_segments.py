@@ -12,14 +12,14 @@ def seven_segment(pattern):
         if a==1:
             return True
         return False
-    
+
 
     def hor(d):
         if d:
             print(" _ ")
         else:
             print("   ")
-    
+
     def vert(d1,d2,d3):
         word=""
 
@@ -27,23 +27,23 @@ def seven_segment(pattern):
             word="|"
         else:
             word=" "
-        
+
         if d3:
             word+="_"
         else:
             word+=" "
-        
+
         if d2:
             word+="|"
         else:
             word+=" "
-        
+
         print(word)
 
-    
+
 
     pattern_b=list(map(to_bool,pattern))
-    
+
 
 
     hor(pattern_b[0])
@@ -55,7 +55,7 @@ def seven_segment(pattern):
         if pattern_b[7+i]:
             number+=pow(2,i)
     print(int(number))
-        
+
 #submission=Submission("your_name")
 #submission.header("Your Name")
 
@@ -72,20 +72,18 @@ seven_segment(one)
 #submission.matrix_print("W",weight_matrix)
 
 
-def updateweights(weightmatrix, pattern):
-    for i in range(weightmatrix.shape[0]):
-        for j in range(i):
-            weightmatrix[i][j] = weightmatrix[i][j] + (pattern[i] * pattern[j])
-
-
+def updateweights(weightmatrix, patterns):
+    for pattern in patterns:
+          for i in range(weightmatrix.shape[0]):
+              for j in range(i):
+                  weightmatrix[i][j] += (pattern[i] * pattern[j])
+    return (weightmatrix/len(patterns))
 
 lengthofnetwork = len(six)
 weightmatrix = np.zeros((lengthofnetwork, lengthofnetwork))
+examplepatterns = (three, six, one)
 
-updateweights(weightmatrix, six)
-updateweights(weightmatrix, three)
-updateweights(weightmatrix, one)
-weightmatrix = weightmatrix/3
+weightmatrix = updateweights(weightmatrix, examplepatterns)
 
 
 def hopfieldNetwork(weightmatrix, pattern):
@@ -110,15 +108,6 @@ def hopfieldNetwork(weightmatrix, pattern):
             return pattern
         iteration+=1
         pattern = newpattern[:]
-        
-        
-        
-
-
-
-
-
-
 
 
 print("test1")
@@ -167,4 +156,3 @@ seven_segment(test)
 
 
 #submission.bottomer()
-
