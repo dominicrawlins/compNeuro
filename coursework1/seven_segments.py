@@ -59,9 +59,8 @@ def seven_segment(pattern):
 def calculateenergy(weightmatrix, pattern):
     energy = 0
     for i in range(len(pattern)):
-        for j in range(i):
-            if(i != j):
-                energy += pattern[i] * pattern[j] * weightmatrix[i][j]
+        for j in range(len(pattern)):
+            energy += pattern[i] * pattern[j] * weightmatrix[i][j]
     energy = energy * -0.5
     return energy
 
@@ -82,9 +81,12 @@ seven_segment(one)
 def updateweights(weightmatrix, patterns):
     for pattern in patterns:
           for i in range(weightmatrix.shape[0]):
-              for j in range(i):
-                  weightmatrix[i][j] += (pattern[i] * pattern[j])
+              for j in range(weightmatrix.shape[0]):
+                  if(i != j):
+                      weightmatrix[i][j] += (pattern[i] * pattern[j])
     return (weightmatrix/len(patterns))
+
+
 
 lengthofnetwork = len(six)
 weightmatrix = np.zeros((lengthofnetwork, lengthofnetwork))
@@ -93,7 +95,7 @@ examplepatternsname = ("three", "six", "one")
 
 weightmatrix = updateweights(weightmatrix, examplepatterns)
 
-
+print(weightmatrix)
 
 #this assumes you have called your weight matrix "weight_matrix"
 submission.section("Weight matrix")
@@ -111,10 +113,7 @@ def hopfieldNetwork(weightmatrix, pattern, threshold):
             newpattern[i] = 0
             for j in range(len(pattern)):
                 if(i != j):
-                    if(i > j):
-                        newpattern[i] += (pattern[j] * weightmatrix[i][j]) - threshold
-                    else:
-                        newpattern[i] += (pattern[j] * weightmatrix[j][i]) - threshold
+                    newpattern[i] += (pattern[j] * weightmatrix[i][j]) - threshold
         for i in range(len(pattern)):
             if(newpattern[i] > 0):
                 newpattern[i] = 1
