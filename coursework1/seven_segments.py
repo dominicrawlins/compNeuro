@@ -115,7 +115,7 @@ def hopfieldNetwork(weightmatrix, pattern, threshold):
                 if(i != j):
                     newpattern[i] += (pattern[j] * weightmatrix[i][j]) - threshold
         for i in range(len(pattern)):
-            if(newpattern[i] > 0):
+            if(newpattern[i] >= 0):
                 newpattern[i] = 1
             else:
                 newpattern[i] = -1
