@@ -128,7 +128,11 @@ def hopfieldNetwork(weightmatrix, pattern, threshold):
         #seven_segment(test)
         submission.seven_segment(pattern)
         #for COMSM0027
-        print("energy after iteration ", iteration, ": ", calculateenergy(weightmatrix, pattern))
+        energy = calculateenergy(weightmatrix, pattern)
+        submission.qquad()
+        submission.print_number(energy)
+        submission.qquad()
+        print("energy after iteration ", iteration, ": ", energy)
 
 
 print("test1")
@@ -145,7 +149,7 @@ energy = calculateenergy(weightmatrix, test)
 
 #where energy is the energy of test
 submission.qquad()
-submission.print_number(energy)
+#submission.print_number(energy)
 
 #this prints a space
 submission.qquad()
@@ -164,7 +168,7 @@ energy = calculateenergy(weightmatrix, test)
 #for COMSM0027
 #where energy is the energy of test
 submission.qquad()
-submission.print_number(energy)
+#submission.print_number(energy)
 
 ##this prints a space
 submission.qquad()
