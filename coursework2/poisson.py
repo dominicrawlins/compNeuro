@@ -120,13 +120,13 @@ for idx, spike in enumerate(spikes):
     if(spike == 1):
         spikeTrain.append(idx*2*ms)
 
-fanoFactorResult = fanoFactor(spikeTrain, 2*ms, 20*60)
-print("Fano Factor: ", fanoFactorResult)
-
 spikeIntervals = calcInterspikeIntervals(spikeTrain)
 CV = calculateCV(spikeIntervals)
 print("Coefficient of Variation:", CV)
 
+for fanoFactorWindow in fanoFactorWindows:
+    fanoFactorResult = fanoFactor(spikeTrain, fanoFactorWindow*ms, 20*60)
+    print("Fano Factor for ", fanoFactorWindow*ms, "ms: ", fanoFactorResult)
 
 
 
