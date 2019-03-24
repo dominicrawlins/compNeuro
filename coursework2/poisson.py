@@ -1,4 +1,7 @@
 import random as rnd
+import matplotlib.pyplot as plt
+import numpy as np
+import math
 
 def get_spike_train(rate,big_t,tau_ref):
 
@@ -39,6 +42,25 @@ def fanoFactor(spikeTrain, timePeriod, totalTime):
 
     return fanoFactorReturn
 
+def calcInterspikeIntervals(spikeTrain):
+    intervals = []
+    for intervalNumber in range(1, len(spikeTrain)):
+        interval = spikeTrain[intervalNumber] - spikeTrain[intervalNumber - 1]
+        intervals.append(interval)
+    return intervals
+
+def calculateCV(intervals):
+    cvMean = sum(intervals)/len(intervals)
+
+    cvVarianceSum = 0
+    for i in range(len(intervals)):
+        cvVarianceSum += (intervals[i] - cvMean) ** 2
+    cvVariance = cvVarianceSum / len(intervals)
+
+    CV = math.sqrt(cvVariance)/cvMean
+    return CV
+
+
 
 
 Hz=1.0
@@ -72,7 +94,12 @@ for refractoryPeriod in refractoryPeriods:
         fanoFactorResult = fanoFactor(spikeTrain, window, time)
         print("Refractory Period: ", refractoryPeriod)
         print("Window: ", window)
-        print("Fano Factor: ", fanoFactorResult, "\n")
+        print("Fano Factor: ", fanoFactorResult)
+
+        interspikeIntervals = calcInterspikeIntervals(spikeTrain)
+        CV = calculateCV(interspikeIntervals)
+
+        print("Coefficient of Variation:", CV, "\n")
 
 
 print("\n\n----------------------\n\nQuestion 2\n\n------------------------\n")
@@ -96,6 +123,10 @@ for idx, spike in enumerate(spikes):
 fanoFactorResult = fanoFactor(spikeTrain, 2*ms, 20*60)
 print("Fano Factor: ", fanoFactorResult)
 
+spikeIntervals = calcInterspikeIntervals(spikeTrain)
+CV = calculateCV(spikeIntervals)
+print("Coefficient of Variation:", CV)
+
 
 
 
@@ -104,7 +135,6 @@ print("\n\n----------------------\n\nQuestion 3\n\n------------------------\n")
 #stimulus=[float(x) for x in load_data("stim.dat")]
 stimulus=load_data("stim.dat",float)
 
-print(len(stimulus))
 averages=[]
 totalTime = 20*60
 windowTime = 100*ms
@@ -121,3 +151,8 @@ for window in range(int(totalWindows)):
     else:
         averageStimulus = sum(spikeStimulus)/ len(spikeStimulus)
         averages.append(averageStimulus)
+
+xaxis = np.linspace(0, totalTime, totalWindows)
+plt.plot(xaxis, averages, )
+
+plt.savefig('averageStimulus.png')
