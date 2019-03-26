@@ -87,9 +87,9 @@ print("----------------------\n\nQuestion 1\n\n------------------------\n")
 
 
 for refractoryPeriod in refractoryPeriods:
+    tau = refractoryPeriod * ms
+    spikeTrain = get_spike_train(firingRate, time, tau)
     for fanoFactorWindow in fanoFactorWindows:
-        tau = refractoryPeriod * ms
-        spikeTrain = get_spike_train(firingRate, time, tau)
         window = fanoFactorWindow * ms
         fanoFactorResult = fanoFactor(spikeTrain, window, time)
         print("Refractory Period: ", refractoryPeriod)
