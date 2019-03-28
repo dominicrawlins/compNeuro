@@ -135,6 +135,7 @@ print("\n\n----------------------\n\nQuestion 3\n\n------------------------\n")
 #stimulus=[float(x) for x in load_data("stim.dat")]
 stimulus=load_data("stim.dat",float)
 
+'''
 averages=[]
 totalTime = 20*60
 windowTime = 100*ms
@@ -153,6 +154,33 @@ for window in range(int(totalWindows)):
         averages.append(averageStimulus)
 
 xaxis = np.linspace(0, totalTime, totalWindows)
+plt.plot(xaxis, averages, )
+
+plt.savefig('averageStimulus.png')
+
+averages =
+for spike in spikeTrain:
+    stimulusArray = []
+    for i in range(50):
+        if((spike - (i*ms*2)) >= 0):
+            stimulusArray.append(stimulus[int((spike - (i*ms*2))*500)])
+    averageStimulus = sum(stimulusArray)/len(stimulusArray)
+    averages.append(averageStimulus)
+'''
+
+averages = []
+for i in range(50):
+    windowsize = 50 - i
+    offset = windowsize*2*ms
+    stimulusValues = []
+    for spike in spikeTrain:
+        stimulusValue = stimulus[int((spike-offset)*500)]
+        stimulusValues.append(stimulusValue)
+    average = sum(stimulusValues)/len(stimulusValues)
+    averages.append(average)
+
+#print(averages[:100])
+xaxis = np.linspace(0, 100, 50)
 plt.plot(xaxis, averages, )
 
 plt.savefig('averageStimulus.png')
