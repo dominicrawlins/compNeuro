@@ -36,7 +36,13 @@ for time in range(int(timeSample/timeStep)):
 
 
 xaxis = np.linspace(0, timeSample, timeSample/timeStep)
-plt.plot(xaxis, voltageSamples, )
+plt.figure(num=None, figsize=(15,8))
+plt.plot(xaxis, voltageSamples, label="Neuron")
+plt.legend(loc='upper center', bbox_to_anchor=(0, 0.9, 0.15, 0.2), mode = "expand", shadow=False, ncol = 2, fontsize=14)
+plt.xlabel("Time (s)", fontsize=14)
+plt.ylabel("Membrane Potential (mV)", fontsize=14)
+plt.xticks(np.arange(0, 1.1, 0.1), fontsize=12)
+plt.yticks(fontsize=12)
 
 
 plt.savefig('fireAndIntegrate.png')
@@ -79,7 +85,7 @@ for q in range(2):
     for time in range(int(timeSample/timeStep)):
         for i in range(2):
             voltageSamples[time][i] = currentVoltage[i]
-            ISyn[i] = gsyn * s[i] * (ESyn[q] - currentVoltage[i])
+            ISyn[i] = gsyn * s[abs(i-1)] * (ESyn[q] - currentVoltage[i])
             dVdT[i] = ((leakPotential - currentVoltage[i] + RmIe + ISyn[i]) / tauM) * ms
             currentVoltage[i] += dVdT[i]
             s[i] -= (s[i] * ms) / tauS
@@ -89,8 +95,14 @@ for q in range(2):
 
     plt.clf()
     xaxis = np.linspace(0, timeSample, timeSample/timeStep)
-    plt.plot(xaxis, voltageSamples[:, 0], )
-    plt.plot(xaxis, voltageSamples[:, 1], )
+    plt.figure(num=None, figsize=(15,8))
+    plt.plot(xaxis, voltageSamples[:, 0], label='Neuron A')
+    plt.plot(xaxis, voltageSamples[:, 1], label='Neuron B')
+    plt.legend(loc='upper center', bbox_to_anchor=(0, 0.9, 0.35, 0.2), mode = "expand", shadow=False, ncol = 2, fontsize=14)
+    plt.xlabel("Time (s)", fontsize=14)
+    plt.ylabel("Membrane Potential (mV)", fontsize=14)
+    plt.xticks(np.arange(0, 1.1, 0.1), fontsize=12)
+    plt.yticks(fontsize=12)
 
 
     plt.savefig(fileNames[q])
